@@ -13,3 +13,4 @@
 // Lembrar de importar NO arquivo que será utilizado o arquivo à ser exportado (import {nomeDoArquivo} ./directorio)
 
 console.log("123 testando ...");
+

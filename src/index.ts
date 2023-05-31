@@ -11,3 +11,6 @@
 // Criar um arquivo para tipagem (types.ts) (qual padrão/tipo que será usado em cada variável)
 // Lembrar de exportar quando quiser utiliza-la em outro local/arquivo (export const/type ...)
 // Lembrar de importar NO arquivo que será utilizado o arquivo à ser exportado (import {nomeDoArquivo} ./directorio)
+
+console.log("123 testando ...");
+

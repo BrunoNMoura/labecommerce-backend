@@ -7,10 +7,12 @@
 // Criar a pasta (build) onde vai ficar os arquivos transpilados em javascript (.js)
 // Criar o tsconfig.json (npx tsc --init)
 // Mudar os scripts necessários para rodar o código pelo script (no package.json)
-// Fazer o código 
+// Fazer o código
 // Criar um arquivo para tipagem (types.ts) (qual padrão/tipo que será usado em cada variável)
 // Lembrar de exportar quando quiser utiliza-la em outro local/arquivo (export const/type ...)
 // Lembrar de importar NO arquivo que será utilizado o arquivo à ser exportado (import {nomeDoArquivo} ./directorio)
 
-console.log("123 testando ...");
+import { products, users } from "./database";
 
+console.table(users);
+console.table(products);

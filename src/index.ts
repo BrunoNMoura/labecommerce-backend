@@ -12,7 +12,11 @@
 // Lembrar de exportar quando quiser utiliza-la em outro local/arquivo (export const/type ...)
 // Lembrar de importar NO arquivo que será utilizado o arquivo à ser exportado (import {nomeDoArquivo} ./directorio)
 
-import { products, users } from "./database";
+import { getAllProducts, getAllUsers, products, searchProduct, searchUser, users } from "./database";
 
 console.table(users);
 console.table(products);
+console.table(searchUser(users,"fulano"));
+console.table(searchProduct(products,"monitor"));
+console.table(getAllUsers)
+console.table(getAllProducts)

@@ -47,28 +47,14 @@ export const searchProduct = (products:TProduct[], infoProduct:string):TProduct[
   })
 }
 
-const creatUser:TUser= 
-  {
-    id: "u003",
-    name: "Astrodev",
-    email: "astrodev@email.com",
-    password: "astrodev99",
-    createdAt: new Date().toISOString(),
+export const creatUser= (newUser:TUser):void=>{   
+  users.push(newUser)
+  console.log("Usuario com sucesso!") 
+}
+
+
+  export const creatProduct = (newProduct:TProduct):void=>{ 
+    products.push(newProduct)
+    console.log("Produto cadastrado com sucesso!");
+    
   }
-
-export const getAllUsers = [...users, creatUser]
-
-//getAllUsers.push(users)
-//getAllUsers.push(creatUser)
-
-
-  const newProduct:TProduct = {
-    id:"prod003", 
-    name:"SSD gamer", 
-    price:349.99, 
-    description:"Acelere seu sistema com velocidades incríveis de leitura e gravação.",  imageUrl:"https://s2.glbimg.com/EIyqoslaWOshsnac5R7Jijfc6dA=/0x0:1000x1000/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/q/K/9uf0kQROCmG9ETP4171A/productgallery7132.jpg"
-  
-  }
-
-   export const getAllProducts = [...products, newProduct]
-console.log("Produto criado com sucesso");

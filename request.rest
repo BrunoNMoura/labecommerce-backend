@@ -1,0 +1,11 @@
+###get test de API
+
+GET http://localhost:3003/ping
+
+###get all users
+
+GET http://localhost:3003/users
+
+###get all products
+
+GET http://localhost:3003/products

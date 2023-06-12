@@ -113,31 +113,68 @@ app.post("/products", (req: Request, res: Response) => {
 // console.table(searchUser(users,"fulano"));
 // console.table(searchProduct(products,"monitor"));
 
-// console.table(users);
-// const newUser = {
-//   id: "u004",
-//   name: "Astrodev",
-//   email: "astrodev@email.com",
-//   password: "astrodev99",
-//   createdAt: new Date().toISOString(),
-// };
+//deletar usuario
 
-// creatUser(newUser);
+app.delete("/users/:id",(req:Request,res:Response)=>{
+  const id=req.params.id
+  const findUsersIdex = users.findIndex((user)=>{
+    return user.id === id
+  })
+  if(findUsersIdex>=0){
+    users.splice(findUsersIdex, 1)
+    res.status(200).send("Usuário deletado com sucesso!")
+  }else{
+    res.status(200).send("Usuário não encontrado!")
+  }
+})
 
-// console.table(users);
+//delete produto
 
-// console.table(products);
+app.delete("/products/:id",(req:Request,res:Response)=>{
+  const id=req.params.id
+  const findProductsIdex = products.findIndex((product)=>{
+    return product.id === id
+  })
+  if(findProductsIdex>=0){
+    products.splice(findProductsIdex,1)
+    res.status(200).send("produto deletado com sucesso!")
+  }
+    res.status(200).send("Produto não encontrado!")
+})
 
-// const newProduct = {
-//   id: "prod003",
-//   name: "SSD gamer",
-//   price: 349.99,
-//   description:
-//     "Acelere seu sistema com velocidades incríveis de leitura e gravação.",
-//   imageUrl:
-//     "https://s2.glbimg.com/EIyqoslaWOshsnac5R7Jijfc6dA=/0x0:1000x1000/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/q/K/9uf0kQROCmG9ETP4171A/productgallery7132.jpg",
-// };
+//alterar usuário
 
-// creatProduct(newProduct);
+app.put("/users/:id",(req:Request,res:Response)=>{
+  const id = req.params.id
+  const {name,email,password}=req.body
+  const findUsers= users.find((user)=>{
+    return user.id === id
+  })
+  if(findUsers){
+    findUsers.name=name||findUsers.name
+    findUsers.email=email||findUsers.email
+    findUsers.password=password||findUsers.password
+    res.status(200).send("Usuário alterado com sucesso")
+  }else{
+    res.status(200).send("Usuário não encontrado!")
+  }
+})
 
-// console.table(products);
+//alterar produto
+
+app.put("/products/:id",(req:Request,res:Response)=>{
+  const id=req.params.id
+  const {name,price, description,imageUrl}=req.body
+  const findProducts = products.find((product)=>{
+    return product.id === id
+  })
+  if(findProducts){
+    findProducts.name=name||findProducts.name
+    findProducts.price=price||findProducts.price
+    findProducts.description=description||findProducts.description
+    findProducts.imageUrl=imageUrl||findProducts.imageUrl
+    res.status(200).send("Produto alterado com sucesso!")
+  }else{
+    res.status(200).send("produto não localizado")
+  } 
+})

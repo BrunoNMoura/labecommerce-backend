@@ -9,3 +9,34 @@ GET http://localhost:3003/users
 ###get all products
 
 GET http://localhost:3003/products
+
+###delete usuário por id
+
+DELETE http://localhost:3003/users/u005
+
+###deletando produto
+
+DELETE http://localhost:3003/products/prod005
+
+### alterando usuario
+
+PUT http://localhost:3003/users/u001
+content-type: application/json
+
+{
+    "name":"Bruno",
+    "email":"bnn@gmail.com",
+    "password":"123456"
+}
+
+### alterar produto
+
+PUT http://localhost:3003/products/prod001
+content-type: application/json
+
+{
+    "name":"mouse não gamer",
+    "price":2345,
+    "description":"Mouse top das galáxias",
+    "imageUrl":"https://wwww.mausetopdasgalaxias"
+}

@@ -1,4 +1,4 @@
--- Active: 1687180875893@@127.0.0.1@3306
+-- Active: 1687387546215@@127.0.0.1@3306
 
 CREATE TABLE
     users (
@@ -6,35 +6,30 @@ CREATE TABLE
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        createdAt TEXT NOT NULL
+        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
+SELECT "createdAt" FROM users;
+
+SELECT datetime('now');
+
 INSERT INTO
-    users (
-        id,
-        name,
-        email,
-        password,
-        createdAt
-    )
+    users (id, name, email, password)
 VALUES (
         "u001",
         "Beltrana",
         "beltrana@email.com",
-        "beltrana00",
-        "2023-06-20T18:19:17.823Z"
+        "beltrana00"
     ), (
         "u002",
         "Fulano",
         "fulano@email.com",
-        "fulano123",
-        "2023-06-20T19:12:17.823Z"
+        "fulano123"
     ), (
         "u003",
         "Astrodev",
         "astrodev@email.com",
-        "astRodev99@",
-        "2023-06-20T19:07:39.358Z"
+        "astRodev99@"
     );
 
 SELECT * FROM users;
@@ -92,9 +87,77 @@ VALUES (
 
 SELECT * FROM products;
 
-DROP TABLE products;
+DROP TABLE purchases;
+
+UPDATE products SET name = "CLOWN FISH" WHERE id = "p002";
+
+SELECT * FROM products WHERE name LIKE '%tang%';
+
+INSERT INTO
+    users (
+        id,
+        name,
+        email,
+        password,
+        createdAt
+    )
+VALUES (
+        "u004",
+        "Ciclano",
+        "ciclano@email.com",
+        "ciclano123456",
+        "2023-06-21T19:07:39.259Z"
+    );
+
+INSERT INTO
+    products (
+        id,
+        name,
+        price,
+        description,
+        imageUrl
+    )
+VALUES (
+        "p006",
+        "TUBARÃO BANDED",
+        2200,
+        "Enquanto a maioria dos tubarões é grande demais para um aquário doméstico, o tubarão de bambu é uma exceção à regra. Com cerca de 41 polegadas de comprimento, pode ser mantido em um grande tanque de 180 galões junto com outros peixes compatíveis, e muitas vezes se dá bem em cativeiro.",
+        "https://www.universodoaquario.com.br/image/cache/catalog/Tubar%C3%A3o%20Banded-500x500.png"
+    );
+
+DELETE FROM users WHERE id = 'u004';
+
+DELETE FROM products WHERE id = 'p006';
 
 UPDATE products
 SET
-    name = "MANDARIN GREEN AND BLUE"
-WHERE id = "p001"
+    name = "TUBARÃO BAMBU",
+    price = 2500,
+    description = "Os únicos desafios reais em manter esses tubarões estão relacionados à alimentação e aos problemas de saúde: você pode precisar 'orientar a alimentação' do seu tubarão para ter certeza de que ele come adequadamente e fornecer os medicamentos necessários para manter sua saúde. ",
+    "imageUrl" = "https://media-cdn.tripadvisor.com/media/photo-s/0d/e6/6c/6e/tubarao-bambu.jpg"
+WHERE id = 'p006';
+
+CREATE TABLE
+    IF NOT EXISTS purchases (
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (buyer) REFERENCES users(id)
+    );
+
+INSERT INTO
+    purchases (id, buyer, total_price)
+VALUES ('o001', 'u001', 3000), ('o002', 'u001', 500), ('o003', 'u002', 2500), ('o004', 'u002', 1500), ('o005', 'u003', 950), ('o006', 'u003', 50), ('o007', 'u004', 2000), ('o008', 'u004', 350);
+
+UPDATE purchases SET total_price = 300 WHERE id = 'O001';
+
+SELECT
+    purchases.id AS orderID,
+    users.id AS usersID,
+    users.name,
+    users.email,
+    purchases.total_price,
+    purchases.created_at
+FROM purchases
+    JOIN users ON purchases.buyer = users.id;

@@ -6,12 +6,12 @@ CREATE TABLE
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        createdAt TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );
 
 SELECT "createdAt" FROM users;
 
-SELECT datetime('now');
+SELECT datetime('now','localtime');
 
 INSERT INTO
     users (id, name, email, password)
@@ -85,7 +85,7 @@ VALUES (
         "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/peixes-yellow-tang-m-500x500.jpg"
     );
 
-SELECT * FROM products;
+SELECT * FROM purchases;
 
 DROP TABLE purchases;
 
@@ -143,14 +143,18 @@ CREATE TABLE
         buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
         created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (buyer) REFERENCES users(id)
+        FOREIGN KEY (buyer) REFERENCES users(id) ON UPDATE CASCADE ON DELETE RESTRICT
     );
+
+SELECT * FROM users;
+
+DROP TABLE users;
 
 INSERT INTO
     purchases (id, buyer, total_price)
 VALUES ('o001', 'u001', 3000), ('o002', 'u001', 500), ('o003', 'u002', 2500), ('o004', 'u002', 1500), ('o005', 'u003', 950), ('o006', 'u003', 50), ('o007', 'u004', 2000), ('o008', 'u004', 350);
 
-UPDATE purchases SET total_price = 300 WHERE id = 'O001';
+UPDATE purchases SET total_price = 300 WHERE id = 'o001';
 
 SELECT
     purchases.id AS orderID,
@@ -161,3 +165,32 @@ SELECT
     purchases.created_at
 FROM purchases
     JOIN users ON purchases.buyer = users.id;
+
+CREATE TABLE
+    IF NOT EXISTS purchases_products (
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+    );
+
+INSERT INTO
+    purchases_products (
+        purchase_id,
+        product_id,
+        quantity
+    )
+VALUES ('o001', 'p001', 1), ('o002', 'p002', 6), ('o003', 'p003', 2);
+
+
+SELECT * 
+FROM products
+LEFT JOIN purchases_products ON products.id = purchases_products.product_id
+LEFT JOIN purchases ON purchases.id = purchases_products.purchase_id;
+
+UPDATE users 
+SET id = 'u000'
+WHERE id = 'u001';
+

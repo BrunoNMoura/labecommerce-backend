@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-//import { match } from "assert";
 import { getUsers } from "./endPoints/getUsers";
 import { getProducts } from "./endPoints/getProducts";
 import { postUsers } from "./endPoints/postUsers";
@@ -20,6 +19,7 @@ app.use(cors());
 app.listen(3003, () => {
   console.log("Servidor rodando na porta 3003");
 });
+
 
 app.get("/ping", (req: Request, res: Response) => {
   res.send("Pong!");

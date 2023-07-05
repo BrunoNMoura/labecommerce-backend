@@ -1,7 +1,8 @@
 import { Request, Response } from "express"
 import { users } from "../database";
+import { db } from "../database/knex";
 
-export const getUsers = (req: Request, res: Response) => {
+export const getUsers = async(req: Request, res: Response) => {
     try {
       const name = req.query.name;
       if (name !== undefined) {
@@ -14,8 +15,12 @@ export const getUsers = (req: Request, res: Response) => {
         });
         res.status(200).send(response);
       }
-      res.status(200).send(users);
+      const result = await db.raw(`SELECT * FROM users;`)
+      res.status(200).send(result);
     } catch (error) {
+      if (req.statusCode === 200) {
+        res.status(500);
+      }
       if (error instanceof Error) {
         res.send(error.message);
       } else {

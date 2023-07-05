@@ -1,34 +1,49 @@
-import { Request, Response } from "express"
-import { users } from "../database";
+import { Request, Response } from "express";
+import { db } from "../database/knex";
 
-export const putUser = (req: Request, res: Response) => {
-    try {
-      const id = req.params.id;
-      const { name, email, password } = req.body;
-      const findUsers = users.find((user) => {
-        return user.id === id;
-      });
-      //check name
-      if (name && typeof name !== "string") {
+export const putUser = async(req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const newId = req.body.id;
+    const newName = req.body.name;
+    const newEmail = req.body.email;
+    const newPassword = req.body.password;
+   
+    if (newId !== undefined) {
+      if (typeof newId !== "string") {
         res.status(422);
-        throw new Error("The name must be a string");
+        throw new Error("The 'id' must be a string");
       }
-      if (name && name.length < 3) {
+      if (newId.length < 3) {
         res.status(400);
-        throw new Error("The name must be at least three characters long");
+        throw new Error("The 'id' must be at least three characters long");
       }
-      //check email
+    }
+    //check name
+    if (newName !== undefined) {
+      if (typeof newName !== "string") {
+        res.status(422);
+        throw new Error("The 'name' must be a string");
+      }
+      if (newName.length < 3) {
+        res.status(400);
+        throw new Error("The 'name' must be at least three characters long");
+      }
+    }
+    //check email
+    if (newEmail !== undefined) {
       if (
-        email &&
-        !email.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        !newEmail.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
       ) {
         res.status(400);
         throw new Error("Incorrect email format. Try again");
       }
-      //check password
+    }
+    //check password
+    if (newPassword !== undefined) {
       if (
-        password &&
-        !password.match(
+        !newPassword.match(
           "^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$"
         )
       ) {
@@ -37,19 +52,34 @@ export const putUser = (req: Request, res: Response) => {
           "Your password must be between 6 and 15 characters, with both uppercase and lowercase letters, and at least one number and one special character."
         );
       }
-      if (findUsers) {
-        findUsers.name = name || findUsers.name;
-        findUsers.email = email || findUsers.email;
-        findUsers.password = password || findUsers.password;
-        res.status(200).send("Usuário alterado com sucesso");
-      } else {
-        res.status(400).send("Usuário não encontrado!");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        res.send(error.message);
-      } else {
-        res.status(500).send("Unknown error");
-      }
+    }
+
+    const [user]= await db.raw(`
+      SELECT * FROM users
+      WHERE id = "${id}";
+    `)
+
+    if (user) {
+      await db.raw(`
+      UPDATE users
+      SET
+      id = "${newId || user.id}",
+      name = "${newName || user.name}",
+      email = "${newEmail || user.email}",
+      password = "${newPassword || user.password}"
+      WHERE id = "${id}";`)
+      res.status(200).send("User changed successfully");
+    } else {
+      res.status(400).send("User not found!");
+    }
+  } catch (error) {
+    if (req.statusCode === 200) {
+      res.status(500);
+    }
+    if (error instanceof Error) {
+      res.send(error.message);
+    } else {
+      res.status(500).send("Unknown error");
     }
   }
+};

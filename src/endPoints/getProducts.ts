@@ -1,21 +1,28 @@
 import { Request, Response } from "express"
-import { products } from "../database";
+import { db } from "../database/knex";
 
-export const getProducts = (req: Request, res: Response) => {
+export const getProducts = async(req: Request, res: Response) => {
     try {
       const name = req.query.name;
       if (name !== undefined) {
         if (typeof name !== "string") {
-          res.status(422);
+          res.status(400);
           throw new Error("The value has to be a string");
         }
-        const response = products.filter((product) => {
-          return product.name.toLowerCase().includes(name.toLowerCase());
-        });
-        res.status(200).send(response);
+        const [product] = await db.raw(`
+        SELECT * FROM products
+        WHERE name = "${name}"
+        `)
+        if(product){
+          res.status(200).send(product)
+        }        
       }
-      res.status(200).send(products);
+      const result = await db.raw(`SELECT * FROM products;`)
+      res.status(200).send(result);
     } catch (error) {
+      if (req.statusCode === 200) {
+        res.status(500);
+      }
       if (error instanceof Error) {
         res.send(error.message);
       } else {

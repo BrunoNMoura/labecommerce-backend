@@ -8,6 +8,8 @@ import { deleteUsers } from "./endPoints/deleteUsers";
 import { deleteProduct } from "./endPoints/deleteProduct";
 import { putUser } from "./endPoints/putUser";
 import { putProduct } from "./endPoints/putProduct";
+import { postPurchases } from "./endPoints/postPurchases";
+import { getPurchases } from "./endPoints/getPurchases";
 
 //link do postman: https://documenter.getpostman.com/view/26570541/2s93si2Aa1
 
@@ -45,14 +47,22 @@ app.post("/products",postProducts);
 
 app.delete("/users/:id",deleteUsers);
 
-//delete produto
+//delete product
 
 app.delete("/products/:id",deleteProduct);
 
-//alterar usuário
+//change user
 
 app.put("/users/:id", putUser);
 
-//alterar produto
+//change product
 
 app.put("/products/:id", putProduct);
+
+//creat purchase
+
+app.post("/purchases", postPurchases);
+
+//get purchases
+
+app.get("/purchases", getPurchases)

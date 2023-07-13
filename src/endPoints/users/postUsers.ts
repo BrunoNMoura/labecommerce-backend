@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { users } from "../database";
-import { TUser } from "../types";
-import { db } from "../database/knex";
+import { TUser } from "../../types";
+import { db } from "../../database/knex";
 
 export const postUsers = async (req: Request, res: Response) => {
   try {
@@ -9,15 +8,7 @@ export const postUsers = async (req: Request, res: Response) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    //const createdAt = req.body.createdAt;
 
-    // const newUser: TUser = {
-    //   id,
-    //   name,
-    //   email,
-    //   password,
-    //   createdAt: new Date().toISOString(),
-    // };
     //check id
 
     if (id && id[0] !== "u") {
@@ -61,25 +52,33 @@ export const postUsers = async (req: Request, res: Response) => {
 
     //check only id
 
-    const existingId = users.find((user) => user.id === id);
-    if (existingId) {
+    const [userId] = await db("users").where({ id: id });
+    if (userId) {
       res.status(400);
       throw new Error("The given ID already exists");
     }
 
     //check only email
 
-    const existingEmail = users.find((user) => user.email === email);
-    if (existingEmail) {
+    const [userEmail] = await db("users").where({ email: email });
+    if (userEmail) {
       res.status(400);
       throw new Error("The given email already exists");
     }
 
-    await db.raw(`INSERT INTO users (id, name, email, password)
-      VALUES ("${id}","${name}","${email}","${password}")`);
+    const newUser: TUser = {
+      id: id,
+      name: name,
+      email: email,
+      password: password,
+      createdAt: new Date().toISOString(),
+    };
+
+    await db("users").insert(newUser);
+
     res.status(201).send("User registration successfully completed!");
   } catch (error) {
-    if (req.statusCode === 200) {
+    if (res.statusCode === 200) {
       res.status(500);
     }
     if (error instanceof Error) {

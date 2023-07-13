@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { db } from "../database/knex";
+import { db } from "../../database/knex";
 
-export const putUser = async(req: Request, res: Response) => {
+export const putUser = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
+    const idToEdit = req.params.id;
 
     const newId = req.body.id;
     const newName = req.body.name;
     const newEmail = req.body.email;
     const newPassword = req.body.password;
-   
+
     if (newId !== undefined) {
       if (typeof newId !== "string") {
         res.status(422);
@@ -54,26 +54,23 @@ export const putUser = async(req: Request, res: Response) => {
       }
     }
 
-    const [user]= await db.raw(`
-      SELECT * FROM users
-      WHERE id = "${id}";
-    `)
+    const [user] = await db("users").where({ id: idToEdit });
 
     if (user) {
-      await db.raw(`
-      UPDATE users
-      SET
-      id = "${newId || user.id}",
-      name = "${newName || user.name}",
-      email = "${newEmail || user.email}",
-      password = "${newPassword || user.password}"
-      WHERE id = "${id}";`)
-      res.status(200).send("User changed successfully");
+      const updateUser = {
+        id: newId || user.id,
+        name: newName || user.name,
+        email: newEmail || user.email,
+        password: newPassword || user.password,
+      };
+      await db("users").update(updateUser).where({ id: idToEdit });
     } else {
       res.status(400).send("User not found!");
     }
+    
+    res.status(200).send("User changed successfully");
   } catch (error) {
-    if (req.statusCode === 200) {
+    if (res.statusCode === 200) {
       res.status(500);
     }
     if (error instanceof Error) {

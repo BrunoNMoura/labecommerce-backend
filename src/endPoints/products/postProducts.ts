@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { products } from "../database";
-//import { TProduct } from "../types";
-import { db } from "../database/knex";
+import { TProduct } from "../../types";
+import { db } from "../../database/knex";
 
 export const postProducts = async (req: Request, res: Response) => {
   try {
@@ -10,14 +9,6 @@ export const postProducts = async (req: Request, res: Response) => {
     const price = req.body.price;
     const description = req.body.description;
     const imageUrl = req.body.imageUrl;
-
-    // const newProduct: TProduct = {
-    //   id,
-    //   name,
-    //   price,
-    //   description,
-    //   imageUrl,
-    // };
 
     //check id
 
@@ -59,27 +50,26 @@ export const postProducts = async (req: Request, res: Response) => {
 
     //check only id
 
-    const [product] = await db.raw(`SELECT * FROM products
-    WHERE id = "${id}"`)
-    if(!product){
+    const [product] = await db("products").where({ id: id });
+    if (product) {
       res.status(400);
-      throw new Error ("The given ID already exists")
+      throw new Error("The given ID already exists");
     }
+    const newProduct: TProduct = {
+      id: id,
+      name: name,
+      price: price,
+      description: description,
+      imageUrl: imageUrl,
+    };
 
-    // const existingId = products.find((product) => product.id === id);
-    // if (existingId) {
-    //   res.status(400);
-    //   throw new Error("The given ID already exists");
-    // }
-
-    await db.raw(`INSERT INTO products (id, name, price, description, imageUrl)
-      VALUES ("${id}","${name}","${price}","${description}","${imageUrl}")`);
+    await db("products").insert(newProduct);
 
     res.status(201).send("Product registration successfully completed!");
   } catch (error) {
-    if (req.statusCode === 200) {
+    if (res.statusCode === 200) {
       res.status(500);
-    }    
+    }
     if (error instanceof Error) {
       res.send(error.message);
     } else {

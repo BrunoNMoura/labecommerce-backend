@@ -1,4 +1,6 @@
--- Active: 1687387546215@@127.0.0.1@3306
+-- Active: 1689113657646@@127.0.0.1@3306
+
+---------------------- Table Users -------------------------------------
 
 CREATE TABLE
     users (
@@ -6,12 +8,10 @@ CREATE TABLE
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        createdAt TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+        createdAt TEXT DEFAULT(DATETIME('now', 'localtime')) NOT NULL
     );
 
-SELECT "createdAt" FROM users;
-
-SELECT datetime('now','localtime');
+------------------- Insert Users--------------------------------------
 
 INSERT INTO
     users (id, name, email, password)
@@ -32,9 +32,7 @@ VALUES (
         "astRodev99@"
     );
 
-SELECT * FROM users;
-
-DROP TABLE users;
+-------------------- table Products---------------------------------
 
 CREATE TABLE
     products (
@@ -44,6 +42,8 @@ CREATE TABLE
         description TEXT NOT NULL,
         imageUrl TEXT NOT NULL
     );
+
+--------------------- insert Products ------------------------------
 
 INSERT INTO
     products (
@@ -85,13 +85,16 @@ VALUES (
         "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/peixes-yellow-tang-m-500x500.jpg"
     );
 
-SELECT * FROM purchases;
+-----------------------------training SQL-----------------------------------
 
-DROP TABLE purchases;
-
+------ update product
 UPDATE products SET name = "CLOWN FISH" WHERE id = "p002";
 
+------ search with condition
+
 SELECT * FROM products WHERE name LIKE '%tang%';
+
+----- insert new User
 
 INSERT INTO
     users (
@@ -109,6 +112,8 @@ VALUES (
         "2023-06-21T19:07:39.259Z"
     );
 
+----- insert new product
+
 INSERT INTO
     products (
         id,
@@ -125,9 +130,13 @@ VALUES (
         "https://www.universodoaquario.com.br/image/cache/catalog/Tubar%C3%A3o%20Banded-500x500.png"
     );
 
+----- delete by Id
+
 DELETE FROM users WHERE id = 'u004';
 
 DELETE FROM products WHERE id = 'p006';
+
+----- update product by id
 
 UPDATE products
 SET
@@ -137,26 +146,30 @@ SET
     "imageUrl" = "https://media-cdn.tripadvisor.com/media/photo-s/0d/e6/6c/6e/tubarao-bambu.jpg"
 WHERE id = 'p006';
 
+------------------------------table purchases---------------------------------
+
 CREATE TABLE
     IF NOT EXISTS purchases (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
         buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
-        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created_at TEXT DEFAULT(DATETIME('now', 'localtime')) NOT NULL,
         FOREIGN KEY (buyer) REFERENCES users(id) 
         ON UPDATE CASCADE 
         ON DELETE CASCADE
     );
 
-SELECT * FROM users;
-
-DROP TABLE users;
+------------------------insert purchases-------------------------------------
 
 INSERT INTO
     purchases (id, buyer, total_price)
 VALUES ('o001', 'u001', 3000), ('o002', 'u001', 500), ('o003', 'u002', 2500), ('o004', 'u002', 1500), ('o005', 'u003', 950), ('o006', 'u003', 50), ('o007', 'u004', 2000), ('o008', 'u004', 350);
 
+--- update purchase by Id
+
 UPDATE purchases SET total_price = 300 WHERE id = 'o001';
+
+---- select by condition and relationship
 
 SELECT
     purchases.id AS orderID,
@@ -168,16 +181,22 @@ SELECT
 FROM purchases
     JOIN users ON purchases.buyer = users.id;
 
+----------------------------table relationship btween tables--------------------
+
 CREATE TABLE
     IF NOT EXISTS purchases_products (
         purchase_id TEXT NOT NULL,
         product_id TEXT NOT NULL,
         quantity INTEGER NOT NULL,
-        FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+        FOREIGN KEY (purchase_id) REFERENCES purchases(id)  
+        ON UPDATE CASCADE 
+        ON DELETE CASCADE,
         FOREIGN KEY (product_id) REFERENCES products(id)
         ON UPDATE CASCADE 
         ON DELETE CASCADE
     );
+
+------------------------insert relationships----------------------------
 
 INSERT INTO
     purchases_products (
@@ -187,13 +206,11 @@ INSERT INTO
     )
 VALUES ('o001', 'p001', 1), ('o002', 'p002', 6), ('o003', 'p003', 2);
 
+----select between tables
 
 SELECT * 
 FROM products
 LEFT JOIN purchases_products ON products.id = purchases_products.product_id
 LEFT JOIN purchases ON purchases.id = purchases_products.purchase_id;
 
-UPDATE users 
-SET id = 'u000'
-WHERE id = 'u001';
 

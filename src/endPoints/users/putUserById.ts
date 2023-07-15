@@ -1,41 +1,42 @@
 import { Request, Response } from "express";
-import { TUser } from "../../types";
 import { db } from "../../database/knex";
 
-export const postUsers = async (req: Request, res: Response) => {
+export const putUser = async (req: Request, res: Response) => {
   try {
-    const id = req.body.id;
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
+    const idToEdit = req.params.id;
+
+    const newId = req.body.id;
+    const newName = req.body.name;
+    const newEmail = req.body.email;
+    const newPassword = req.body.password;
 
     //check id
 
-    if(id===undefined || id === ""){
+    if(newId===undefined || newId === ""){
       res.status(400);
       throw new Error("put a 'id' in the string");
     }
 
-    if (id[0] !== "u") {
+    if (newId[0] !== "u") {
       res.status(400);
       throw new Error("Id must start with character 'u'");
     }
 
-    if(id.length <3){
+    if(newId.length <3){
       res.status(400)
       throw new Error("The 'id' must be at least three characters long")
     }
 
     //check name
-    if(name===undefined||name === ""){
+    if(newName===undefined||newName === ""){
       res.status(400);
       throw new Error("put a name in the string");
     }
-    if (typeof name !== "string") {
+    if (typeof newName !== "string") {
       res.status(400);
       throw new Error("The name must be a string");
     }
-    if (name.length < 3) {
+    if (newName.length < 3) {
       res.status(400);
       throw new Error("The name must be at least three characters long");
     }
@@ -43,7 +44,7 @@ export const postUsers = async (req: Request, res: Response) => {
     //check email
     
     if (
-      !email.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+      !newEmail.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     ) {
       res.status(400);
       throw new Error("Incorrect email format. Try again");
@@ -52,8 +53,8 @@ export const postUsers = async (req: Request, res: Response) => {
     //check password
 
     if (
-      password &&
-      !password.match(
+      newPassword &&
+      !newPassword.match(
         "^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$"
       )
     ) {
@@ -63,33 +64,21 @@ export const postUsers = async (req: Request, res: Response) => {
       );
     }
 
-    //check only id
+    const [user] = await db("users").where({ id: idToEdit });
 
-    const [userId] = await db("users").where({ id: id });
-    if (userId) {
-      res.status(400);
-      throw new Error("The given ID already exists");
+    if (user) {
+      const updateUser = {
+        id: newId || user.id,
+        name: newName || user.name,
+        email: newEmail || user.email,
+        password: newPassword || user.password,
+      };
+      await db("users").update(updateUser).where({ id: idToEdit });
+    } else {
+      res.status(400).send("User not found!");
     }
-
-    //check only email
-
-    const [userEmail] = await db("users").where({ email: email });
-    if (userEmail) {
-      res.status(400);
-      throw new Error("The given email already exists");
-    }
-
-    const newUser: TUser = {
-      id: id,
-      name: name,
-      email: email,
-      password: password,
-      createdAt: new Date().toISOString(),
-    };
-
-    await db("users").insert(newUser);
-
-    res.status(201).send("User registration successfully completed!");
+    
+    res.status(200).send("User changed successfully");
   } catch (error) {
     if (res.statusCode === 200) {
       res.status(500);

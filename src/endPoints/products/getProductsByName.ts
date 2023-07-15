@@ -7,7 +7,11 @@ export const getProducts = async (req: Request, res: Response) => {
     if (nameProduct !== undefined) {
       if (typeof nameProduct !== "string") {
         res.status(400);
-        throw new Error("The value has to be a string");
+        throw new Error("The value has to be a string");        
+      }
+      if(nameProduct.length<3){
+        res.status(400);
+      throw new Error("The 'nameProduct' must be at least three characters long");
       }
       const [product] = await db("products").where({ name: nameProduct });
       if (product) {

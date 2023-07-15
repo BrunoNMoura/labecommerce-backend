@@ -1,16 +1,16 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { getUsers } from "./endPoints/users/getUsers";
-import { getProducts } from "./endPoints/products/getProducts";
+import { getUsers } from "./endPoints/users/getUsersByName";
+import { getProducts } from "./endPoints/products/getProductsByName";
 import { postUsers } from "./endPoints/users/postUsers";
 import { postProducts } from "./endPoints/products/postProducts";
-import { deleteUsers } from "./endPoints/users/deleteUsers";
-import { deleteProduct } from "./endPoints/products/deleteProduct";
-import { putUser } from "./endPoints/users/putUser";
-import { putProduct } from "./endPoints/products/putProduct";
+import { deleteUsers } from "./endPoints/users/deleteUsersById";
+import { deleteProduct } from "./endPoints/products/deleteProductById";
+import { putUser } from "./endPoints/users/putUserById";
+import { putProduct } from "./endPoints/products/putProductById";
 import { postPurchases } from "./endPoints/purchases/postPurchases";
-import { getPurchases } from "./endPoints/purchases/getPurchases";
-import { deletePurchase } from "./endPoints/purchases/deletePurcahse";
+import { getPurchases } from "./endPoints/purchases/getPurchasesById";
+import { deletePurchase } from "./endPoints/purchases/deletePurcahseById";
 
 //link do postman: https://documenter.getpostman.com/view/26570541/2s93si2Aa1
 

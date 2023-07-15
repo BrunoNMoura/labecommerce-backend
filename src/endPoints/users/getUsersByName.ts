@@ -9,6 +9,10 @@ export const getUsers = async (req: Request, res: Response) => {
         res.status(422);
         throw new Error("The value has to be a string");
       }
+      if(name.length<3){
+        res.status(400);
+      throw new Error("The 'name' must be at least three characters long");
+      }
       const [nameUser] = await db("users").where({ name: name });
       if (nameUser) {
         res.status(200).send(nameUser);

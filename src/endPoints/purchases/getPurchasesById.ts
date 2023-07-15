@@ -10,6 +10,14 @@ export const getPurchases = async (req: Request, res: Response) => {
         res.status(400);
         throw new Error("The value has to be a non-empty string");
       }
+      if(idPurchase[0] !=="o"){
+        res.status(400);
+      throw new Error("Id must start with character 'o'");
+      }
+      if(idPurchase.length < 4){
+        res.status(400);
+      throw new Error("The 'id' must be at least four characters long");
+      }
     }
     const [purch] = await db("purchases")
     .select(

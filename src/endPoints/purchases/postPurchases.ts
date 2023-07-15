@@ -8,23 +8,11 @@ export const postPurchases = async (req: Request, res: Response) => {
     const total_price = req.body.total_price;
     const products = req.body.products;
 
-    if (id && id[0] !== "o" && id.lenght < 2) {
+    if (id && id[0] !== "o") {
       res.status(400);
-      throw new Error(
-        "Id must start with character 'o' and must have at least two characters"
-      );
+      throw new Error("Id must start with character 'o' ");
     }
-    if (buyer && buyer[0] !== "u" && buyer.lenght < 2) {
-      res.status(400);
-      throw new Error(
-        "Buyer must start with character 'u' and must have at least two characters"
-      );
-    }
-    if (
-      total_price &&
-      typeof total_price !== "number" &&
-      total_price.lenght <= 0
-    ) {
+    if ((total_price && typeof total_price !== "number") || total_price <= 0) {
       res.status(400);
       throw new Error(
         "The 'total_price' must be a number and must be greater than zero"
@@ -46,7 +34,7 @@ export const postPurchases = async (req: Request, res: Response) => {
       } else {
         if (
           product.quantity &&
-          typeof product.quantity !== "number" &&
+          typeof product.quantity !== "number" ||
           product.quantity <= 0
         ) {
           invalidQuantity = true;
@@ -55,14 +43,18 @@ export const postPurchases = async (req: Request, res: Response) => {
       }
     }
 
-    if(invalidProdType){
+    if (invalidProdType) {
       res.status(400);
-      throw new Error ("'Id product' is requerid and need to be the string type")
+      throw new Error(
+        "'Id product' is requerid and need to be the string type"
+      );
     }
 
-    if(invalidQuantity){
-      res. status(400);
-      throw new Error ("'quantity' is requerid, need to be number type and must be greater than zero")
+    if (invalidQuantity) {
+      res.status(400);
+      throw new Error(
+        "'quantity' is requerid, need to be number type and must be greater than zero"
+      );
     }
 
     const [purchase] = await db("purchases").where({ id: id });
@@ -71,23 +63,23 @@ export const postPurchases = async (req: Request, res: Response) => {
       throw new Error("The give ID already exists");
     }
 
-    const [user] = await db("users").where({id:buyer})
-    if(!user){
+    const [user] = await db("users").where({ id: buyer });
+    if (!user) {
       res.status(400);
-      throw new Error ("'buyer' not found")
+      throw new Error("'buyer' not found");
     }
 
-    for (let product of products){
-      const [result]=await db("products").where({id:product.id})
-      if(!result){
-        prodNoFound = true
-        break
+    for (let product of products) {
+      const [result] = await db("products").where({ id: product.id });
+      if (!result) {
+        prodNoFound = true;
+        break;
       }
     }
 
-    if(prodNoFound){
+    if (prodNoFound) {
       res.status(400);
-      throw new Error ("'product'not found")
+      throw new Error("Id 'product'not found");
     }
 
     const newPurchase: TPurchase = {
@@ -98,13 +90,13 @@ export const postPurchases = async (req: Request, res: Response) => {
 
     await db("purchases").insert(newPurchase);
 
-    for (let product of products){
-      const newProduct:TPurchaseProd = {
-        purchase_id:id,
-        product_id:product.id,
-        quantity:product.quantity
-      }
-      await db ("purchases_products").insert(newProduct)
+    for (let product of products) {
+      const newProduct: TPurchaseProd = {
+        purchase_id: id,
+        product_id: product.id,
+        quantity: product.quantity,
+      };
+      await db("purchases_products").insert(newProduct);
     }
 
     res.status(201).send("Purchases registration successfully completed!");

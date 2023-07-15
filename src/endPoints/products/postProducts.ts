@@ -18,32 +18,57 @@ export const postProducts = async (req: Request, res: Response) => {
     }
 
     //check name
-    if (name && typeof name !== "string") {
-      res.status(422);
+
+    if(name===undefined||name === ""){
+      res.status(400);
+      throw new Error("put a name in the string");
+    }
+    if (typeof name !== "string") {
+      res.status(400);
       throw new Error("The name must be a string");
     }
-    if (name && name.length < 2) {
+    if (name && name.length < 3) {
       res.status(400);
       throw new Error("The name must be at least three characters long");
     }
 
     //check price
 
-    if (price && typeof price !== "number") {
+    if(price===undefined||price === ""){
+      res.status(400);
+      throw new Error("put a number");
+    }
+
+    if (typeof price !== "number") {
       res.status(422);
       throw new Error("The price must be a number");
     }
 
+    if(price<=0){
+      res.status(400);
+      throw new Error("Price must be greater than zero");
+    }
+
     //check description
 
-    if (description && typeof description !== "string") {
+    if(description===undefined||description === ""){
+      res.status(400);
+      throw new Error("put a description in the string");
+    }
+
+    if (typeof description !== "string") {
       res.status(422);
       throw new Error("The description must be a string");
     }
 
     //check imageUrl
 
-    if (imageUrl && typeof imageUrl !== "string") {
+    if(imageUrl===undefined||imageUrl === ""){
+      res.status(400);
+      throw new Error("put a imageUrl in the string");
+    }
+
+    if (typeof imageUrl !== "string") {
       res.status(422);
       throw new Error("The imageUrl must be a string");
     }

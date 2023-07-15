@@ -3,7 +3,17 @@ import { db } from "../../database/knex";
 
 export const deleteUsers = async (req: Request, res: Response) => {
   try {
-    const idToDelete = req.params.id;
+    const idToDelete = req.params.id;   
+
+    if (idToDelete[0] !== "u") {
+      res.status(400);
+      throw new Error("Id must start with character 'u'");
+    }
+
+    if (idToDelete.length < 4) {
+      res.status(400);
+      throw new Error("The 'id' must be at least four characters long");
+    }
 
     const [user] = await db("users").where({ id: idToDelete });
     if (!user) {

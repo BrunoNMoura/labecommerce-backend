@@ -1,372 +1,258 @@
-# labecommerce-backend
-# Projeto labecommerce
+# Labecommerce - Backend
+![Labecommerce](./assets/Showing.png)
+Construction of an API for a fish store, to manage its products, users and purchases made.
+<br><br>
+For products, the API allows adding a new product, getting all products or searching one by name, editing a product's information and deleting a product by its id.
+<br><br>
+For users, the API allows adding a new user, getting all users or searching one by name, editing a user's information and deleting a user by its id.
+<br><br>
+For purchases, the API allows you to add a new purchase, get the details of a purchase by its id and delete a purchase by its id.
 
-É o primeiro projeto do back-end, onde praticamos toda a base de criação de uma API vinculada a um banco de dados real.<br><br>
-Ele tem uma particularidade: seus requisitos são implementados ao longo dos exercícios pós aula. Isso significa que caso você siga o desenvolvimento das aulas, quando chegar na data de entrega já terá um projeto funcional e quase pronto para entrega.
-<br>
-### Conteúdos abordados
-- NodeJS
-- Typescript
-- Express
-- SQL e SQLite
-- Knex
-- Postman
+## Índice
+- <a href="#-Layout">Layout</a>
+- <a href="#-Requests">Requests (Paths)</a>
+- <a href="#-Example-of-Requests">Example of Requests</a>
+- <a href="#-How-to-run-this-project">How to run this project</a>
+- <a href="#-Technologies-used">Technologies used</a>
+- <a href="#-Demonstration">Demonstration</a>
+- <a href="#-Documentation">Documentation</a>
+- <a href="#-Developer">Developer</a>
+- <a href="#-Next steps">Next steps</a>
 
-# ⚠⚠⚠ Importante!!! ⚠⚠⚠
-Para critérios de correção serão considerados rigorosamente a nomenclatura de: Tabelas, colunas e caminhos(path) das requisições. Portando, siga o padrão de nomenclaturas apresentado logo abaixo.
+## 📸Layout
+- Folder structure
 
-## Banco de dados 🎲🎲
-O nome das tabelas e das colunas devem ser em letras minúsculas, sem acento, sem caracteres especiais e em _snake_case_(caso sejas palavras compostas. exp.: arco_iris). Por isso, siga restritamente a nomeclatura proposta!
+![folder-structure](./assets/Layout-Vscode.png)
 
-O banco de dados deve conter obrigatóriamente quatro tabelas:
+## 📌Requests (Paths)
 
-## Tabela de Usuários: 
-### Nome da Tabela:
-- users
-### Nome das colunas
-- id
-- name
-- email
-- password
-- created_at
-
-## Tabela de Produtos 🛒🛒
-### Nome da Tabela:
-- products
-### Nome das colunas
-- id 
-- name
-- price
-- description
-- image_url
-
-### Tabela de Registro de Compras 💸💸
-
-### Nome da Tabela:
-- purchases
-### Nome das colunas
-- id 
-- buyer
-- total_price
-- created_at
-- paid
-
-## Tabela de Registro de Produtos Comprados 🧾🧾
-### Nome da Tabela:
-purchases_products
-### Nome das colunas
-- purchase_id
-- product_id
-- quantity
---------------------------
-<br>
-
-#### Para realizar a modelagem do seu banco de dados e das tabelas, considere a imagem a baixo. 
-
-Nela são mostradas as relações entre as tabelas :
-
-![image](https://user-images.githubusercontent.com/29845719/214396608-ddcfd097-e615-44f9-acbe-f815f9abb83f.png)
-https://dbdiagram.io/d/63c6e8e5296d97641d7a4666
-
-<br>
----------------
-
-## Caminhos das Requisições (Paths) 🛣🛣
-Os caminhos devem ser definidos em letras minúsculas, sem acento e sem caracteres especiais. Siga conforme o modelo de documentação proposto.
-
-### Requisições de Usuários
+### Users Requests
 - /users
-### Requisições de Produtos
-- /products
-### Requisições de Compras
-- /purchases
----------------
-# Lista de requisitos - Obrigatórios
+### User Requests by name
+- /users/userName
+### Products Requests
+- /users
+### Product Requests by name
+- /users/productName
+### Purchase Requests by id
+- /purchases/id
 
-### 1. Implementar os Endpoints :
+## Example of Requests
 
-    - [ ]  Get all users
-    - [ ]  Create user
-    - [ ]  Create product
-    - [ ]  Get all products funcionalidade 1
-    - [ ]  Get all products funcionalidade 2
-    - [ ]  Edit product by id
-    - [ ]  Create purchase
-    - [ ]  Delete purchase by id
-    - [ ]  Get purchase by id
-
-### 2. Documentação no Postman de todos os endpoints (obrigatória para correção), descrevendo os endpoints e colocando os exemplos de respostas 
-
-### 3. Criar o arquivo  README.md , explicando seu projeto com prints das respostas
-
-Aqui está uma Documentação para referência (como deve ficar)
-https://documenter.getpostman.com/view/21151478/2s8ZDeSdbz
-
--------------------
-
-# Exemplos de requisição
-
-**Não precisa cadastrar o mesmo nome, email e quaisquer outros valores vistos aqui nos exemplos de saída. Porém, deve-se respeitar rigorosamente a estrutura pedida no banco de dados (nome das tabelas e colunas), nomes das propriedades na resposta da API e caminho dos endpoints**
-
--------------------
-
-## Get all users
-Retorna todas as pessoas cadastradas.<br>
-Dica: atenção com o nome da propriedade createdAt! Ela deve vir em camelCase, apesar de estar em snake_case no banco de dados.
-```typescript
-// Request
-// GET /users
-
-// Response
-// status 200 OK
+### GET/users
+- returns all users
+```
 [
     {
-        id: "u001",
-        name: "Fulano",
-        email: "fulano@email.com",
-        password: "fulano123",
-        createdAt: "2023-01-15 09:12:42"
+        "id": "u001",
+        "name": "Beltrana",
+        "email": "beltrana@email.com",
+        "password": "beltrana00",
+        "createdAt": "2023-07-12 19:57:55"
     },
     {
-        id: "u002",
-        name: "Ciclana",
-        email: "ciclana@email.com",
-        password: "ciclana99",
-        createdAt: "2023-01-17 12:35:28"
+        "id": "u002",
+        "name": "Fulano",
+        "email": "fulano@email.com",
+        "password": "fulano123",
+        "createdAt": "2023-07-12 19:57:55"
+    },
+    {
+        "id": "u003",
+        "name": "Astrodev",
+        "email": "astrodev@email.com",
+        "password": "astRodev99@",
+        "createdAt": "2023-07-12 19:57:55"
+    },
+    {
+        "id": "u004",
+        "name": "Ciclano",
+        "email": "ciclano@email.com",
+        "password": "ciclano123456",
+        "createdAt": "2023-06-21T19:07:39.259Z"
+    },
+    {
+        "id": "u005",
+        "name": "Danielle",
+        "email": "danielle123@email.com",
+        "password": "Dani123456@",
+        "createdAt": "2023-07-12T23:55:11.773Z"
     }
 ]
 ```
+### GET/users/name
+-returns a specific user
 
-<br>
-
--------------------------
-## Create user
-Cadastra uma nova pessoa.
-```typescript
-// Request
-// POST /users
-// body JSON
+```
 {
-    "id": "u003",
-    "name": "Astrodev",
-    "email": "astrodev@email.com",
-    "password": "astrodev00"
-}
-
-// Response
-// status 201 CREATED
-{
-    message: "Cadastro realizado com sucesso"
+    "id": "u001",
+    "name": "Beltrana",
+    "email": "beltrana@email.com",
+    "password": "beltrana00",
+    "createdAt": "2023-07-12 19:57:55"
 }
 ```
----------------
-<br>
+### GET/products
+- returns all products
 
-## Create product
-Cadastra um novo produto.
-```typescript
-// Request
-// POST /products
-// body JSON
-{
-    "id": "prod003",
-    "name": "Teclado gamer",
-    "price": 200,
-    "description": "Teclado mecânico com numpad",
-    "imageUrl": "https://picsum.photos/seed/Teclado%20gamer/400"
-}
-
-// Response
-// status 201 CREATED
-{
-    message: "Produto cadastrado com sucesso"
-}
 ```
-
----------------------
-<br>
-
-## Get all products funcionalidade 1
-Retorna todos os produtos cadastrados.
-```typescript
-// Request
-// GET /products
-
-// Response
-// status 200 OK
 [
     {
-        id: "prod001",
-        name: "Mouse gamer",
-        price: 250,
-        description: "Melhor mouse do mercado!",
-        imageUrl: "https://picsum.photos/seed/Mouse%20gamer/400"
+        "id": "p001",
+        "name": "mandarim",
+        "price": 350,
+        "description": "membro da família Callionymidae ou Dragonet e são peixes difíceis de manter devido às suas necessidades de alimentação.",
+        "imageUrl": "https://topbiologia.com/wp-content/uploads/2014/07/peixe-mandarim-1.jpg"
     },
     {
-        id: "prod002",
-        name: "Monitor",
-        price: 900,
-        description: "Monitor LED Full HD 24 polegadas",
-        imageUrl: "https://picsum.photos/seed/Monitor/400"
+        "id": "p002",
+        "name": "peixe palhaço",
+        "price": 50,
+        "description": "são animais de água salgada, oriundos do Pacífico e apresentam tons que variam entre o preto, laranja, amarelo e vermelho",
+        "imageUrl": "https://www.petz.com.br/blog/wp-content/uploads/2022/08/peixe-palhaco-e-anemona-final-1280x720.jpg"
     },
     {
-        id: "prod003",
-        name: "Teclado gamer",
-        price: 200,
-        description: "Teclado mecânico com numpad",
-        imageUrl: "https://picsum.photos/seed/Teclado%20gamer/400"
+        "id": "p003",
+        "name": "Blue Tang",
+        "price": 500,
+        "description": "É o peixe que recebeu o nome de Dori no filme ‘Procurando Nemo'. Membros desta espécie podem viver sozinhos, em pares ou em pequenos grupos de dez a doze indivíduos.",
+        "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/peixes-hepatus-blue-tang-p-500x500.jpg"
+    },
+    {
+        "id": "p004",
+        "name": "FOX FACE",
+        "price": 800,
+        "description": "Este peixe tem a capacidade de mimetização, mudando de cor e tornando-se marron castanho ou oliva com grandes manchas mais escuras para se parecer com as rochas do aquário quando dorme ou quando está estressado",
+        "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/fox-face-medio-500x500.jpg"
+    },
+    {
+        "id": "p005",
+        "name": "YELLOW TANG",
+        "price": 2000,
+        "description": "é uma espécie de peixe da família Acanthuridae e muito popular entre os aquaristas. É originário do Havaí e alimenta-se de algas, artêmia e flocos.O cirurgião-amarelo tem um ferrão na cauda para sua defesa",
+        "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/peixes-yellow-tang-m-500x500.jpg"
+    },
+    {
+        "id": "p006",
+        "name": "TUBARÃO BANDED",
+        "price": 2200,
+        "description": "Enquanto a maioria dos tubarões é grande demais para um aquário doméstico, o tubarão de bambu é uma exceção à regra. Com cerca de 41 polegadas de comprimento, pode ser mantido em um grande tanque de 180 galões junto com outros peixes compatíveis, e muitas vezes se dá bem em cativeiro.",
+        "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/Tubar%C3%A3o%20Banded-500x500.png"
     }
 ]
 ```
+### GET/products/name
+-returns a specific product
 
----------------------------
-<br>
-
-## Get all products funcionalidade 2
-Caso seja enviada uma query params (name) deve ser retornado o resultado da busca de produtos que contenham o _"name"_ informado em seu nome.
-```typescript
-// Request
-// query params = name
-// GET /products?name=gamer
-
-// Response
-// status 200 OK
-[
-    {
-        id: "prod001",
-        name: "Mouse gamer",
-        price: 250,
-        description: "Melhor mouse do mercado!",
-        imageUrl: "https://picsum.photos/seed/Mouse%20gamer/400"
-    },
-    {
-        id: "prod003",
-        name: "Teclado gamer",
-        price: 200,
-        description: "Teclado mecânico com numpad",
-        imageUrl: "https://picsum.photos/seed/Teclado%20gamer/400"
-    }
-]
 ```
-
----------------------------
-<br>
-
-## Edit product by id
-Edita um produto existente.
-```typescript
-// Request
-// path params = :id
-
-// PUT /products/prod003
-// body JSON
 {
-    "id": "prod0033",
-    "name": "Teclado gamer RGB",
-    "price": 300,
-    "description": "Teclado mecânico com RGB e numpad",
-    "imageUrl": "https://picsum.photos/seed/Teclado%20gamer%20RGB/400"
-}
-
-// Response
-// status 200 OK
-{
-    message: "Produto atualizado com sucesso"
+    "id": "p002",
+    "name": "peixe palhaço",
+    "price": 50,
+    "description": "são animais de água salgada, oriundos do Pacífico e apresentam tons que variam entre o preto, laranja, amarelo e vermelho",
+    "imageUrl": "https://www.petz.com.br/blog/wp-content/uploads/2022/08/peixe-palhaco-e-anemona-final-1280x720.jpg"
 }
 ```
+### GET/purchases/id
+-returns a specific purchase
 
----------------------------
-<br>
-
-## Create purchase
-Cadastra um novo pedido. Como dica, o exercício 1 da aula de [Relações em SQL II](https://github.com/labenuexercicios/relacoes-sql-II-exercicios) é uma boa referência.
-```typescript
-// Request
-// POST /purchases
-// body JSON
+```
 {
-    "id": "pur001",
-    "buyer": "u001",
+    "purchaseId": "o013",
+    "buyerId": "u002",
+    "buyerName": "Fulano",
+    "buyerEmail": "fulano@email.com",
+    "totalPrice": 2500,
+    "createdAt": "2023-07-11 22:22:25",
     "products": [
         {
-            "id": "prod001",
+            "id": "p004",
+            "name": "FOX FACE",
+            "price": 800,
+            "description": "Este peixe tem a capacidade de mimetização, mudando de cor e tornando-se marron castanho ou oliva com grandes manchas mais escuras para se parecer com as rochas do aquário quando dorme ou quando está estressado",
+            "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/fox-face-medio-500x500.jpg",
             "quantity": 2
         },
         {
-            "id": "prod002",
+            "id": "p003",
+            "name": "Blue Tang",
+            "price": 500,
+            "description": "É o peixe que recebeu o nome de Dori no filme ‘Procurando Nemo'. Membros desta espécie podem viver sozinhos, em pares ou em pequenos grupos de dez a doze indivíduos.",
+            "imageUrl": "https://www.universodoaquario.com.br/image/cache/catalog/peixes/peixes-agua-salgada/peixes-hepatus-blue-tang-p-500x500.jpg",
             "quantity": 1
-        }
-    ]
-}
-
-// Response
-// status 201 CREATED
-{
-    message: "Pedido realizado com sucesso"
-}
-```
-
-
----------------------------
-<br>
-
-## Delete purchase by id
-Deleta um pedido existente.
-```typescript
-// Request
-// path params = :id
-// DELETE /purchases/pur002
-
-// Response
-// status 200 OK
-{
-    message: "Pedido cancelado com sucesso"
-}
-```
-
-
----------------------------
-<br>
-
-## Get purchase by id
-Retorna os dados de uma compra, incluindo a lista de produtos da mesma.
-```typescript
-// Request
-// path params = :id
-// GET /purchases/pur001
-
-// Response
-// status 200 OK
-{
-    purchaseId: "pur001",
-    buyerId: "u001",
-    buyerName: "Fulano",
-    buyerEmail: "fulano@email.com",
-    totalPrice: 1400,
-    createdAt: "2023-01-15 16:24:54",
-    paid: 0,
-    products: [
-        {
-            id: "prod001",
-            name: "Mouse gamer",
-            price: 250,
-            description: "Melhor mouse do mercado!",
-            imageUrl: "https://picsum.photos/seed/Mouse%20gamer/400",
-            quantity: 2
         },
         {
-            id: "prod002",
-            name: "Monitor",
-            price: 900,
-            description: "Monitor LED Full HD 24 polegadas",
-            imageUrl: "https://picsum.photos/seed/Monitor/400",
-            quantity: 1
+            "id": "p001",
+            "name": "mandarim",
+            "price": 350,
+            "description": "membro da família Callionymidae ou Dragonet e são peixes difíceis de manter devido às suas necessidades de alimentação.",
+            "imageUrl": "https://topbiologia.com/wp-content/uploads/2014/07/peixe-mandarim-1.jpg",
+            "quantity": 3
         }
     ]
 }
 ```
+## 💻 How to run this project
+- If you want to download and install this project on your computer, you need to have git and node installed.
+### Links: 
+✅[Node](https://nodejs.org/en)
+<br><br>
+✅[Git](https://git-scm.com/)
+- After installation, follow the steps below:
+```bash
+# Copy the link below
 
+https://github.com/BrunoNMoura/labecommerce-backend
 
----------------------------
+# Open a terminal and type the following command
+
+git clone (paste the url here)
+
+# access the created page
+
+cd labecommerce-backend
+
+# install the dependencies
+
+npm install
+or
+yarn install
+
+# Executing the Project
+
+npm run start
+or 
+yarn start
+```
+
+## 🛠 Technologies used
+✅[Node.js](https://nodejs.org/en)
 <br>
+✅[TypeScript](https://www.typescriptlang.org/)
+<br>
+✅[Express](https://expressjs.com/pt-br/)
+<br>
+✅[SQL](https://learn.microsoft.com/pt-br/sql/?view=sql-server-ver16)
+<br>
+✅[SQLite](https://www.sqlite.org/docs.html)
+<br>
+✅[Knex.js](https://knexjs.org/guide/)
 
+## 📺  Demonstration
+
+<video src="assets/README gravação final 2023-07-15 202900.mp4" width="320" height="240" controls> Demonstration video mp4
+</video>
+
+## 📚 Documentation
+[View Postman-Labcommerce-Backend](https://documenter.getpostman.com/view/26570541/2s93si2Aa1)
+
+## 🏆 Developer
+![BrunoMoura](./assets/Bruno.jpg)
+<br>
+Bruno Nascimento Moura
+<br>
+[Linkedin](https://www.linkedin.com/in/bruno-moura-dev/)
+
+## 🪜 Next steps
+- Expand the database
+- Implement the API in a frontend application

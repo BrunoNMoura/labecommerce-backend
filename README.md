@@ -240,8 +240,11 @@ yarn start
 
 ## 📺  Demonstration
 
-<video src="assets/README gravação final 2023-07-15 202900.mp4" width="320" height="240" controls> Demonstration video mp4
-</video>
+
+
+https://github.com/BrunoNMoura/labecommerce-backend/assets/114538697/d1222a3b-ac68-48bf-8735-de3174544100
+
+
 
 ## 📚 Documentation
 [View Postman-Labcommerce-Backend](https://documenter.getpostman.com/view/26570541/2s93si2Aa1)
